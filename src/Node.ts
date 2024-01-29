@@ -10,6 +10,6 @@ export class Node {
     }
     
     getChildren(): Set<Node> {
-        return this.children
+        return new Set<Node>(this.children)
     }
 }
