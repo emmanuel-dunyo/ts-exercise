@@ -1,19 +1,27 @@
-
 // DAG - Directed Acyclic Graph
 export class Node {
-    private children = new Set<Node>()
+    private children
+    private name: string
+
+    constructor(name: string){
+        this.name = name
+        this.children = new Set<Node>
+    }
+
+    getName(): string {
+        return this.name
+    }
 
     hasChild(item: Node): boolean {
         return this.children.has(item);
     }
 
-    addChild(item: Node) {
-        // if (this.getDescendants().has(item)) {
-        //     throw new Error("Adding this child would create a cyclic link.");
-        // }
-        this.children.add(item);
-        const jobber = this.getDescendants()
-        console.log('getDesc', this.getDescendants())
+    addChild(child: Node) {
+        if (child.getDescendants().has(this)) {
+            throw new Error("Adding this child would create a cyclic link.")
+        }
+
+        this.children.add(child)
     }
 
     getChildren(): Set<Node> {
@@ -21,14 +29,13 @@ export class Node {
     }
 
     getDescendants(): Set<Node> {
-        const result: Set<Node> = new Set();
+        const result: Set<Node> = new Set()
 
         this.children.forEach((child) => {
-            result.add(child);
-            child.getDescendants().forEach(descendant => result.add(descendant));
-        });
+            result.add(child)
+            child.getDescendants().forEach(descendant => result.add(descendant))
+        })
 
-        return result;
+        return result
     }
-    // this returns children as well as daeacendants - add one child to one parent and getDescendants will be true for parent to contain child
 }
