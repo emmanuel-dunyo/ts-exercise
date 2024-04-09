@@ -36,7 +36,19 @@ describe('Node class', () => {
     budhism.addChild(india)
     expect(budhism.getChildren().size).toBe(1)
   })
-  
+
+  it('test equality when adding nodes', () => {
+    const parent = new Node("parent")
+    const child1 = new Node("child")
+    const child2 = new Node("child")
+    const child3 = new Node("child")
+
+    parent.addChild(child1)
+    parent.addChild(child2)
+    parent.addChild(child3)
+    expect(parent.getChildren().size).toBe(1)
+  })
+
   it('test returned collection is immutable', () => {
     const budhism = new Node("budhism")
     const india = new Node("india")
@@ -85,7 +97,7 @@ describe('Node class', () => {
     expect(parent.getDescendants()).toContain(greatgrandchild)
   })
 
-  it('jobber', () => {
+  it('test it throws exception when adding a cyclic link', () => {
     const parent = new Node("parent")
     const child = new Node("child")
     
@@ -94,4 +106,23 @@ describe('Node class', () => {
       child.addChild(parent) 
     }).toThrow(new Error("Adding this child would create a cyclic link."))
   });
+
+  it('test it throws exception when adding a cyclic link', () => {
+    const a = new Node("a")
+    const b = new Node("b")
+    const c = new Node("c")
+    const d = new Node("d")
+    const e = new Node("e")
+    
+    a.addChild(b)
+    a.addChild(c)
+    b.addChild(d)
+    c.addChild(d)
+    d.addChild(e)
+    
+    expect(() => {
+      e.addChild(c)
+    }).toThrow(new Error("Adding this child would create a cyclic link."))
+  });
+
 });

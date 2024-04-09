@@ -21,6 +21,12 @@ export class Node {
             throw new Error("Adding this child would create a cyclic link.")
         }
 
+        for (const existing of this.children) {
+            if (existing.name === child.name) {
+                return;
+            }
+        }
+
         this.children.add(child)
     }
 
@@ -35,7 +41,6 @@ export class Node {
             result.add(child)
             child.getDescendants().forEach(descendant => result.add(descendant))
         })
-
         return result
     }
 }
