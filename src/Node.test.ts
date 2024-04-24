@@ -37,18 +37,6 @@ describe('Node class', () => {
     expect(budhism.getChildren().size).toBe(1)
   })
 
-  it('test equality when adding nodes', () => {
-    const parent = new Node("parent")
-    const child1 = new Node("child")
-    const child2 = new Node("child")
-    const child3 = new Node("child")
-
-    parent.addChild(child1)
-    parent.addChild(child2)
-    parent.addChild(child3)
-    expect(parent.getChildren().size).toBe(1)
-  })
-
   it('test returned collection is immutable', () => {
     const budhism = new Node("budhism")
     const india = new Node("india")
@@ -124,5 +112,17 @@ describe('Node class', () => {
       e.addChild(c)
     }).toThrow(new Error("Adding this child would create a cyclic link."))
   });
+  
+  it('test equality when adding nodes', () => {
+    const parent = new Node("parent")
+    const child1 = new Node("child")
+    const child2 = new Node("child")
+    const child3 = new Node("child")
 
+    parent.addChild(child1)
+    parent.addChild(child2)
+    parent.addChild(child3)
+    expect(parent.getChildren().size).toBe(1)
+  })
+  
 });
