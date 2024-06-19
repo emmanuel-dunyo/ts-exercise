@@ -1,46 +1,51 @@
 // DAG - Directed Acyclic Graph
-export class Node {
-    private children
-    private name: string
+export class Node<T> {
+	private children: Set<Node<T>>;
+	private data: T;
 
-    constructor(name: string){
-        this.name = name
-        this.children = new Set<Node>
-    }
+	constructor(data: T) {
+		this.data = data;
+		this.children = new Set<Node<T>>();
+	}
 
-    getName(): string {
-        return this.name
-    }
+	getData(): T {
+		return this.data;
+	}
 
-    hasChild(item: Node): boolean {
-        return this.children.has(item);
-    }
+	hasChild(item: Node<T>): boolean {
+		return this.children.has(item);
+	}
 
-    addChild(child: Node) {
-        if (child.getDescendants().has(this)) {
-            throw new Error("Adding this child would create a cyclic link.")
-        }
+	addChild(child: Node<any>) {
+		if (child.getDescendants().has(this)) {
+			throw new Error('Adding this child would create a cyclic link.');
+		}
 
-        for (const existing of this.children) {
-            if (existing.name === child.name) {
-                return;
-            }
-        }
+		if(this.getChildren().has(child)) {
+			// throw new Error('Adding this would create a duplicate child');
+			return;
+		}
 
-        this.children.add(child)
-    }
+		const childName = child.getData()
+		for (const c of this.getChildren()) {
+			if (c.getData() === childName) {
+					return
+			}
+		}
+		this.children.add(child)
+	}
 
-    getChildren(): Set<Node> {
-        return new Set<Node>(this.children)
-    }
+	getChildren(): Set<Node<T>> {
+		return new Set<Node<T>>(this.children);
+	}
 
-    getDescendants(): Set<Node> {
-        const result: Set<Node> = new Set()
+	getDescendants(): Set<Node<T>> {
+		const result: Set<Node<T>> = new Set();
 
-        this.children.forEach((child) => {
-            result.add(child)
-            child.getDescendants().forEach(descendant => result.add(descendant))
-        })
-        return result
-    }
+		this.children.forEach((child) => {
+			result.add(child);
+			child.getDescendants().forEach((descendant) => result.add(descendant));
+		});
+		return result;
+	}
 }
