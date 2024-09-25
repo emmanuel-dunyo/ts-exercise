@@ -1,51 +1,72 @@
 // DAG - Directed Acyclic Graph
 export class Node<T> {
-	private children: Set<Node<T>>;
-	private data: T;
+  private children: Set<Node<T>>;
+  private data: T;
 
-	constructor(data: T) {
-		this.data = data;
-		this.children = new Set<Node<T>>();
-	}
+  constructor(data: T) {
+    this.data = data;
+    this.children = new Set<Node<T>>();
+  }
 
-	getData(): T {
-		return this.data;
-	}
+  getData(): T {
+    return this.data;
+  }
 
-	hasChild(item: Node<T>): boolean {
-		return this.children.has(item);
-	}
+  hasChild(item: Node<T>): boolean {
+    return this.children.has(item);
+  }
 
-	addChild(child: Node<any>) {
-		if (child.getDescendants().has(this)) {
-			throw new Error('Adding this child would create a cyclic link.');
-		}
+  addChild(child: Node<T>) {
+    if (child.getDescendants().has(this)) {
+      throw new Error('Adding this child would create a cyclic link.');
+    }
 
-		if(this.getChildren().has(child)) {
-			// throw new Error('Adding this would create a duplicate child');
-			return;
-		}
+    if (this.getChildren().has(child)) {
+      // throw new Error('Adding this would create a duplicate child');
+      return;
+    }
 
-		const childName = child.getData()
-		for (const c of this.getChildren()) {
-			if (c.getData() === childName) {
-					return
-			}
-		}
-		this.children.add(child)
-	}
+    const childName = child.getData();
+    for (const c of this.getChildren()) {
+      if (c.getData() === childName) {
+        return;
+      }
+    }
+    this.children.add(child);
+  }
 
-	getChildren(): Set<Node<T>> {
-		return new Set<Node<T>>(this.children);
-	}
+  getChildren(): Set<Node<T>> {
+    return new Set<Node<T>>(this.children);
+  }
 
-	getDescendants(): Set<Node<T>> {
-		const result: Set<Node<T>> = new Set();
+  getDescendants(): Set<Node<T>> {
+    const result: Set<Node<T>> = new Set();
 
-		this.children.forEach((child) => {
-			result.add(child);
-			child.getDescendants().forEach((descendant) => result.add(descendant));
-		});
-		return result;
-	}
+    this.children.forEach((child) => {
+      result.add(child);
+      child.getDescendants().forEach((descendant) => result.add(descendant));
+    });
+    return result;
+  }
+}
+
+// create a map constructor
+export class NodeMap<T> {
+  private map: Map<string, Node<T>>;
+
+  constructor() {
+    this.map = new Map<string, Node<T>>();
+  }
+
+  set(key: string, value: Node<T>) {
+    this.map.set(key, value);
+  }
+
+  get(key: string): Node<T> | undefined {
+    return this.map.get(key);
+  }
+
+  has(key: string): boolean {
+    return this.map.has(key);
+  }
 }
