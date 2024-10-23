@@ -49,24 +49,3 @@ export class Node<T> {
     return result;
   }
 }
-
-// create a map constructor
-export class NodeMap<T> {
-  private map: Map<string, Node<T>>;
-
-  constructor() {
-    this.map = new Map<string, Node<T>>();
-  }
-
-  set(key: string, value: Node<T>) {
-    this.map.set(key, value);
-  }
-
-  get(key: string): Node<T> | undefined {
-    return this.map.get(key);
-  }
-
-  has(key: string): boolean {
-    return this.map.has(key);
-  }
-}

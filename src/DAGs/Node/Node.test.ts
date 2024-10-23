@@ -1,4 +1,4 @@
-import { Node, NodeMap } from './Node';
+import { Node } from './Node';
 
 describe('Node class', () => {
   it('test constructor', () => {
@@ -124,15 +124,6 @@ describe('Node class', () => {
     parent.addChild(child1);
     parent.addChild(child2);
     parent.addChild(child3);
-    expect(parent.getChildren().size).toBe(1);
-
-    // const anotherParent = new Node('parent');
-    // const child = new Node('child');
-    // const grandChild = new Node('child');
-    // // const child3 = new Node("child")
-
-    // anotherParent.addChild(child);
-    // child.addChild(grandChild);
-    // expect(child.getChildren().size).toBe(0);
+    expect(parent.getChildren().size).toBe(3);
   });
 });
